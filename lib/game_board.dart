@@ -6,6 +6,27 @@ class GameBoard extends StatefulWidget {
 }
 
 class _GameBoardState extends State<GameBoard> {
+  List<List> matrix;
+  var player1;
+  var player2;
+
+  // constructor
+  _GameBoardState() {
+    _createMatrix();
+  }
+
+  _createMatrix() {
+    player1 = 0;
+    player2 = 0;
+    matrix = List<List>(3);
+    for (int i = 0; i < matrix.length; i++) {
+      matrix[i] = List(3);
+      for (int j = 0; j < matrix[0].length; j++) {
+        matrix[i][j] = ' ';
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -37,6 +58,7 @@ class _GameBoardState extends State<GameBoard> {
     ]));
   }
 
+  String _lastChar = ' ';
   _buildSquare(int i, int j) {
     // bool topleft = i == 0 || j == 0;
     // bool middleleft = i == 1 || j == 0;
@@ -47,9 +69,27 @@ class _GameBoardState extends State<GameBoard> {
     // bool topright = i == 0 || j == 2;
     //bool middleright = i == 1 || j == 2;
     // bool bottomright = i == 2 || j == 2;
-    return Container(
-        width: 100,
-        height: 100,
-        child: Center(child: Text('X', style: TextStyle(fontSize: 92))));
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+        },
+        child: Container(
+            width: 100,
+            height: 100,
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _changeBoard(int i, int j) {
+    setState(() {
+      if (matrix[i][j] == ' ') {
+        if (_lastChar == 'O') {
+          matrix[i][j] = 'X';
+        } else {
+          matrix[i][j] = 'O';
+        }
+        _lastChar = matrix[i][j];
+      }
+    });
   }
 }
