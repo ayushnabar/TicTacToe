@@ -29,8 +29,46 @@ class _GameBoardState extends State<GameBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+    return Scaffold(
+        body: Center(
+            child: Column(children: [
+      //Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Container(
+          height: 100,
+          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+          child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "TicTacToe",
+                textAlign: TextAlign.center,
+              ))),
+      Row(
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Column(mainAxisAlignment: MainAxisAlignment.center,
+                //padding: const EdgeInsets.fromLTRB(70, 100, 160, 100),
+                children: [
+                  Container(
+                      // left top right bottom
+                      padding: const EdgeInsets.fromLTRB(25, 0, 0, 80),
+                      child: Text(
+                        "Player 1\n" + player1.toString(),
+                        textAlign: TextAlign.center,
+                      ))
+                ]),
+            Column(mainAxisAlignment: MainAxisAlignment.center,
+                //padding: const EdgeInsets.fromLTRB(70, 100, 160, 100),
+                children: [
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(250, 0, 0, 80),
+                      child: Text(
+                        "Player 2\n" + player2.toString(),
+                        textAlign: TextAlign.center,
+                      ))
+                ])
+          ]),
+        ],
+      ),
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -55,27 +93,23 @@ class _GameBoardState extends State<GameBoard> {
           _buildSquare(2, 2),
         ],
       ),
-    ]));
+    ])));
   }
 
   String _lastChar = ' ';
   _buildSquare(int i, int j) {
-    // bool topleft = i == 0 || j == 0;
-    // bool middleleft = i == 1 || j == 0;
-    // bool bottomleft = i == 2 || j == 0;
-    // bool topmiddle = i == 0 || j == 1;
-    //bool middlemiddle = i == 1 || j == 1;
-    // bool bottommiddle = i == 2 || j == 1;
-    // bool topright = i == 0 || j == 2;
-    //bool middleright = i == 1 || j == 2;
-    // bool bottomright = i == 2 || j == 2;
     return GestureDetector(
         onTap: () {
           _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
         },
         child: Container(
             width: 100,
             height: 100,
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: Border.all(color: Colors.black)),
             child: Center(
                 child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
   }
@@ -91,5 +125,63 @@ class _GameBoardState extends State<GameBoard> {
         _lastChar = matrix[i][j];
       }
     });
+  }
+
+  _checkWinner(int i, int j) {
+    var col = 0, row = 0, diag = 0, rdiag = 0;
+    //bool boolean;
+    var toCheckFor = matrix[i][j];
+    var length = matrix.length;
+    for (int count = 0; count < matrix.length; count++) {
+      if (matrix[i][count] == toCheckFor) {
+        row++;
+      }
+      if (matrix[count][j] == toCheckFor) {
+        col++;
+      }
+      if (matrix[count][count] == toCheckFor) {
+        diag++;
+      }
+      if (matrix[i][matrix.length - count - 1] == toCheckFor) {
+        rdiag++;
+      }
+    }
+    if (row == length || col == length || diag == length || rdiag == length) {
+      if (toCheckFor == 'O') {
+        _printWinner("Player X");
+      } else if (toCheckFor == 'X') {
+        _printWinner("Player O");
+      }
+    }
+  }
+
+  _calculateScore(int first, int second) {
+    if (matrix[first][second] == 'O') {
+      player1++;
+    } else if (matrix[first][second] == 'X') {
+      player2++;
+    }
+  }
+
+  _printWinner(String winner) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Game Over'),
+            content: Text("$winner won"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Reset Game"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    _createMatrix();
+                  });
+                },
+              )
+            ],
+          );
+        });
   }
 }

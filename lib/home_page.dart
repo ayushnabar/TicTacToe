@@ -10,10 +10,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: Text("TicTacToe")),
       body: new GameBoard(),
     );
   }
