@@ -87,25 +87,25 @@ class _GameBoardState extends State<GameBoard> {
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildSquare(0, 0),
-          _buildSquare(0, 1),
-          _buildSquare(0, 2),
+          _topLeft(0, 0),
+          _topMiddle(0, 1),
+          _topRight(0, 2),
         ],
       ),
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildSquare(1, 0),
-          _buildSquare(1, 1),
-          _buildSquare(1, 2),
+          _middleLeft(1, 0),
+          _middleMiddle(1, 1),
+          _middleRight(1, 2),
         ],
       ),
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildSquare(2, 0),
-          _buildSquare(2, 1),
-          _buildSquare(2, 2),
+          _bottomLeft(2, 0),
+          _bottomMiddle(2, 1),
+          _bottomRight(2, 2),
         ],
       ),
     ])));
@@ -113,7 +113,7 @@ class _GameBoardState extends State<GameBoard> {
 
   var size = 0;
   String _lastChar = ' ';
-  _buildSquare(int i, int j) {
+  _topLeft(int i, int j) {
     return GestureDetector(
         onTap: () {
           _changeBoard(i, j);
@@ -125,11 +125,203 @@ class _GameBoardState extends State<GameBoard> {
           }
         },
         child: Container(
-            width: 100,
-            height: 100,
+            width: 120,
+            height: 120,
             decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                border: Border.all(color: Colors.black)),
+                border: Border(
+              right: BorderSide(),
+              bottom: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _topMiddle(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              right: BorderSide(),
+              left: BorderSide(),
+              bottom: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _topRight(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              left: BorderSide(),
+              bottom: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _middleLeft(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(),
+              right: BorderSide(),
+              bottom: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _middleMiddle(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(),
+              left: BorderSide(),
+              right: BorderSide(),
+              bottom: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _middleRight(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(),
+              left: BorderSide(),
+              bottom: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _bottomMiddle(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(),
+              left: BorderSide(),
+              right: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _bottomLeft(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(),
+              right: BorderSide(),
+            )),
+            child: Center(
+                child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
+  }
+
+  _bottomRight(int i, int j) {
+    return GestureDetector(
+        onTap: () {
+          _changeBoard(i, j);
+          _checkWinner(i, j);
+          _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
+        },
+        child: Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+                border: Border(
+              top: BorderSide(),
+              left: BorderSide(),
+            )),
             child: Center(
                 child: Text(matrix[i][j], style: TextStyle(fontSize: 92)))));
   }
@@ -167,6 +359,7 @@ class _GameBoardState extends State<GameBoard> {
       }
     }
     if (row == length || col == length || diag == length || rdiag == length) {
+      size = 0;
       if (toCheckFor == 'O') {
         _printWinner("Player O");
       } else if (toCheckFor == 'X') {
