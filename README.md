@@ -1,2 +1,4 @@
 # TicTacToe
-TicTacToe App using Flutter
+TicTacToe App using Flutter for MindTAP interview
+
+

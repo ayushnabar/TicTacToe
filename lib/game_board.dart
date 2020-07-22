@@ -18,6 +18,7 @@ class _GameBoardState extends State<GameBoard> {
   _createMatrix() {
     player1 = 0;
     player2 = 0;
+    size = 0;
     matrix = List<List>(3);
     for (int i = 0; i < matrix.length; i++) {
       matrix[i] = List(3);
@@ -35,12 +36,13 @@ class _GameBoardState extends State<GameBoard> {
       //Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
           height: 100,
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
           child: Align(
               alignment: Alignment.center,
               child: Text(
-                "TicTacToe",
+                "Tic Tac Toe",
                 textAlign: TextAlign.center,
+                style: TextStyle(fontFamily: 'Sans Serif'),
               ))),
       Row(
         children: [
@@ -50,21 +52,34 @@ class _GameBoardState extends State<GameBoard> {
                 children: [
                   Container(
                       // left top right bottom
-                      padding: const EdgeInsets.fromLTRB(25, 0, 0, 80),
-                      child: Text(
-                        "Player 1\n" + player1.toString(),
-                        textAlign: TextAlign.center,
-                      ))
+                      padding: const EdgeInsets.fromLTRB(25, 10, 0, 0),
+                      child: Text("Player O",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontFamily: 'Sans Serif'))),
+                  Container(
+                      padding: const EdgeInsets.fromLTRB(25, 10, 0, 70),
+                      child: Text(player1.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontFamily: 'Sans Serif')))
                 ]),
             Column(mainAxisAlignment: MainAxisAlignment.center,
                 //padding: const EdgeInsets.fromLTRB(70, 100, 160, 100),
                 children: [
                   Container(
-                      padding: const EdgeInsets.fromLTRB(250, 0, 0, 80),
+                      padding: const EdgeInsets.fromLTRB(250, 10, 0, 0),
                       child: Text(
-                        "Player 2\n" + player2.toString(),
+                        "Player X",
                         textAlign: TextAlign.center,
-                      ))
+                        style: TextStyle(fontFamily: 'Sans Serif'),
+                      )),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(250, 10, 0, 70),
+                    child: Text(
+                      player2.toString(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontFamily: 'Sans Serif'),
+                    ),
+                  )
                 ])
           ]),
         ],
@@ -96,6 +111,7 @@ class _GameBoardState extends State<GameBoard> {
     ])));
   }
 
+  var size = 0;
   String _lastChar = ' ';
   _buildSquare(int i, int j) {
     return GestureDetector(
@@ -103,6 +119,10 @@ class _GameBoardState extends State<GameBoard> {
           _changeBoard(i, j);
           _checkWinner(i, j);
           _calculateScore(i, j);
+          size++;
+          if (size == 9) {
+            _printTieGame();
+          }
         },
         child: Container(
             width: 100,
@@ -142,15 +162,15 @@ class _GameBoardState extends State<GameBoard> {
       if (matrix[count][count] == toCheckFor) {
         diag++;
       }
-      if (matrix[i][matrix.length - count - 1] == toCheckFor) {
+      if (matrix[count][matrix.length - count - 1] == toCheckFor) {
         rdiag++;
       }
     }
     if (row == length || col == length || diag == length || rdiag == length) {
       if (toCheckFor == 'O') {
-        _printWinner("Player X");
-      } else if (toCheckFor == 'X') {
         _printWinner("Player O");
+      } else if (toCheckFor == 'X') {
+        _printWinner("Player X");
       }
     }
   }
@@ -161,6 +181,27 @@ class _GameBoardState extends State<GameBoard> {
     } else if (matrix[first][second] == 'X') {
       player2++;
     }
+  }
+
+  _printTieGame() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("It's a Tie!"),
+            content: Text("Click to reset game."),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("Reset Button"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _createMatrix();
+                    });
+                  })
+            ],
+          );
+        });
   }
 
   _printWinner(String winner) {
